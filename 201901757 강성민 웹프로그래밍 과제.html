@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>201901757 강성민</title>
+<style>
+h3{text-align:center;
+  font-size:80px;
+color:Blue;}
+h4{text-align:right;
+color:Green;
+font:italic bold 1.5em/1em Georgia;}
+.Titlebox{
+  background-color:Yellow;
+  box-shadow: 5px 5px 5px 5px Black;
+}
+
+#check-btn1 { display: none; }
+#check-btn1:checked ~ .menubars1 { display: block; } 
+.menubars1 { display: none; }
+
+#check-btn2{display:none;}
+#check-btn2:checked~.menubars2{display:block;}
+.menubars2 {display:none;}
+
+#check-btn3{display:none;}
+#check-btn3:checked~.menubars3{display:block;}
+.menubars3{display:none;}
+
+#check-btn4{display:none;}
+
+
+
+#check-btn5{display:none;}
+span{font: italic bold 1.5em/1em Georgia, serif ; color: green;
+  cursor:pointer; 
+}
+.Paint{
+  float:right;
+  width:50%;
+}
+.Menu{
+  float:left;
+}
+.clock{
+  text-align:center;
+  font-size:25px;
+  font-style:italic;
+  color:Purple;
+}
+</style>
+<script type="text/javascript">
+  function showClock(){
+        var currentDate = new Date();
+        var divClock = document.getElementById('divClock');
+        var msg = "현재 시간 : ";
+        if(currentDate.getHours()>12){      //시간이 12보다 크다면 오후 아니면 오전
+          msg += "오후 ";
+          msg += currentDate.getHours()-12+"시 ";
+       }
+       else {
+         msg += "오전 ";
+         msg += currentDate.getHours()+"시 ";
+       }
+ 
+        msg += currentDate.getMinutes()+"분 ";
+        msg += currentDate.getSeconds()+"초";
+ 
+        divClock.innerText = msg;
+ 
+        if (currentDate.getMinutes()>58) {    //정각 1분전부터 빨강색으로 출력
+          divClock.style.color="red";
+        }
+        setTimeout(showClock,1000);  //1초마다 갱신
+      }
+</script>
+</head>
+<body onload="init(),showClock()">
+<div class="Titlebox"><h3>데이터베이스 관리자가 되기 위한 노력</h3></div>
+<h4>201901757 강성민</h4>
+<br>
+<div id="divClock" class="clock"></div>
+<hr>
+<section class="Menu">
+<input id="check-btn1" type="checkbox" />
+    <label for="check-btn1"><span>>웹페이지 제작자 소개</span></label>
+      <ul class="menubars1">
+          <li><span><a href="웹페이지.html" target="_blank">웹페이지 주제 선정 동기</a></span></li>
+          <li><span><a href="성장과정.html" target="_blank">나의 성장과정</a></span></li>
+          <li><span><a href="나의역량.html" target="_blank">제작자의 역량</a></span></li>
+          <li><span><a href="미래계획.html" target="_blank">미래계획</a></span></li>
+      </ul>
+<br><br><br><br><br>
+<input id="check-btn2" type="checkbox" />
+      <label for="check-btn2"><a href="2023최근이슈.html" target="_blank" style="text-decoration-line:none;"><span style="color:lightcoral;">>2023 최근 이슈에 대한 견해</a></span></label>
+<br><br><br><br><br>
+      <input id="check-btn3" type="checkbox" />
+      <label for="check-btn3"><span style="font: italic bold 1.5em/1em Georgia, serif ; color: Purple;">>데이터베이스와 DBMS에 관하여</span></label>
+      <ul class="menubars3">
+        <li><span style="font: italic bold 1.5em/1em Georgia, serif ; color: Purple;"><a href="데이터베이스 정의와 특징.html" target="_blank">데이터베이스의 정의와 특징</a></span></li>
+        <li><span style="font: italic bold 1.5em/1em Georgia, serif ; color: Purple;"><a href="DBMS.html" target="_blank">데이터베이스 관리 시스템</a></span></li>
+      </ul>
+<br><br><br><br><br>
+<input id="check-btn4" type="checkbox" />
+      <label for="check-btn4"><span style="font: italic bold 1.5em/1em Georgia, serif ; color: Orange;"><a href="DBMS rank.html" target="_blank" style="text-decoration-line:none;">>DBMS 모델 순위</a></span></label>
+<br><br><br><br><br>
+<input id="check-btn5" type="checkbox" />
+      <label for="check-btn5"><a href="어려웠던점.html" target="_blank" style="text-decoration-line:none;"><span style="color:Brown;">◆과제 중 어려웠던 점</a></span></label>
+
+</section>
+<section class="Paint">
+<h2 style="color:Green;">마우스 클릭한 상태로 돌리면 무수히 많은 직선들이 돌아갑니다.↓</h2>
+<canvas id="FreeCanvas" style="background-color:aliceblue" width="900" height="600"></canvas>
+<script>
+  var canvas, context;
+  function init(){
+    canvas=document.getElementById("FreeCanvas");
+    context=canvas.getContext("2d");
+    context.lineWidth=2; //선굵기2
+    context.strokeStyle="purple";
+
+    //마우스 리스너
+    canvas.addEventListener("mousemove",function(e){move(e)},false);
+    canvas.addEventListener("mousedown",function(e){down(e)},false);
+    canvas.addEventListener("mouseup",function(e){up(e)},false);
+    canvas.addEventListener("mouseout",function(e){out(e)},false);
+  }
+  var startX=0,startY=0; //마우스의 마지막 포인터 좌표
+  var drawing=false;
+  function draw(curX,curY){
+    context.beginPath();
+    context.moveTo(startX,startY);
+    context.lineTo(curX,curY);
+    context.stroke();
+  }
+  function down(e){
+    startX=e.offsetX; startY=e.offsetY;
+    drawing=true;
+  }
+  function up(e){drawing=false;}
+  function move(e){
+    if(!drawing) return;
+    var curX=e.offsetX, curY=e.offsetY;
+    draw(curX,curY);
+    startX=curx; startY=curY;
+  }
+  function out(e){drawing=false;}
+</script>
+</section>
+</body>
+</html>
